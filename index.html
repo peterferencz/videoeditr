@@ -6,7 +6,6 @@
   <title>Video editR</title>
   <script defer type="module" src="./src/front/main.ts"></script>
   <script defer type="module" src="./src/project/project.ts"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
   <div id="root">
@@ -33,7 +32,7 @@
       </div>
     </div>
     <div id="preview">
-
+      <canvas id="canvas"></canvas>
     </div>
     <div id="toolbar">
       <div class="left">
@@ -41,9 +40,8 @@
         <p id="currentFrame">[-]</p>
       </div>
       <div class="center">
-        <span class="material-symbols-outlined">skip_previous</span>
-        <span class="material-symbols-outlined">play_arrow</span>
-        <span class="material-symbols-outlined">skip_next</span>
+        <p id="playingstatus">[------]</p>
+        <p id="actualfps">[-- fps]</p>
       </div>
       <div class="right">
         <p id="totalTime">--:--</p>

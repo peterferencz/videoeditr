@@ -1,7 +1,3 @@
-import { Vector2 } from './Vector2'
-
-export interface view {
-    position:Vector2
-    dimension:Vector2
+export interface View {
     draw(ctx:CanvasRenderingContext2D):void
 }

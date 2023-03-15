@@ -21,8 +21,10 @@ export type TimeLinROptions = {
 }
 export type TimeLinRTDataElement = {
     from:number,
-    to?:number,
-    text?:string
+    to:number,
+    text:string,
+    falloffBefore:number,
+    falloffAfter:number
 }
 
 export type TimelinRClickEvent = {
@@ -158,33 +160,33 @@ export default class TimelinR{
         }
         
         //Data elements
+        // console.log(this.data)
         const visibleEnd = this.offset + this.view
         const textMargin = 20
         const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
         for (let i = 0; i < this.data.length; i++) {
             const element = this.data[i]
-            if(element.from > visibleEnd || (element.to && element.to < this.offset)){continue}
+            if(element.from - element.falloffBefore > visibleEnd || element.to + element.falloffAfter < this.offset){continue}
             const itemOffset = (element.from - this.offset)*divSize
-            if(element.to){
-                const itemWidth = (element.to - element.from)*divSize - 10
-                let div = `<div class="item" style="left:${itemOffset}px;width:${itemWidth}px">`
-                if(element.text){
-                    //Making it sticky
-                    const end = (element.to - element.from) * width/this.view - element.text.length * rem
-                    const offset = this.#clamp((this.offset - element.from) * width/this.view, 0, end) + textMargin
-                    div += `<p class="itemtext scale" style="left:${itemOffset}px;margin-left:${offset}px">${element.text}<p>`
-                }
-                div += '</div>'
-                HTML += div
-            }else{
-                let div = `<div class="item" style="left:${itemOffset}px">`
-                if(element.text){
-                    div += `<p class="itemtext point">${element.text}<p>`
-                }
-                div += '</div>'
-                HTML += div
-
+            const itemWidth = (element.to - element.from)*divSize - (element.falloffAfter||i==this.data.length-1?0:5)*divSize
+            let div = `<div class="item" style="left:${itemOffset}px;width:${itemWidth}px">`
+            if(element.text){
+                //Making it sticky
+                const end = (element.to - element.from) * width/this.view - element.text.length * rem
+                const offset = this.#clamp((this.offset - element.from) * width/this.view, 0, end) + textMargin
+                div += `<p class="itemtext scale" style="margin-left:${offset}px">${element.text}<p>`
             }
+
+            const d = 1/this.view * width
+            if(element.falloffBefore){
+                div += `<div class="triangle bottom" style="margin-left:-${element.falloffBefore*divSize - d -1}px;border-left: ${element.falloffBefore*divSize - d}px solid transparent"></div>`
+            }
+            if(element.falloffAfter){
+                div += `<div class="triangle top" style="margin-left:${itemWidth}px; border-right: ${element.falloffAfter*divSize - d}px solid transparent"></div>`
+            }
+            div += '</div>'
+            HTML += div
+            
         }
 
 

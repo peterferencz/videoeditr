@@ -1,19 +1,20 @@
+import { Color } from '../Color'
 import { Vector2 } from '../Vector2'
-import { view } from '../view'
+import { View } from '../View'
 
-export class Box implements view{
+export class Box implements View{
     position: Vector2
     dimension: Vector2
-    foreground:string
+    foreground:Color
     
-    constructor(position:Vector2, dimension:Vector2, foreground:string){
+    constructor(position:Vector2, dimension:Vector2, foreground:Color){
         this.position = position
         this.dimension = dimension
         this.foreground = foreground
     }
     
     draw(ctx:CanvasRenderingContext2D): void {
-        ctx.fillStyle = this.foreground
+        ctx.fillStyle = this.foreground.toString()
         ctx.fillRect(this.position.x, this.position.y, this.dimension.x, this.dimension.y)
     }
     

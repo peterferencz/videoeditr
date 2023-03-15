@@ -50,12 +50,27 @@ $currenttime: #ff5656;
         position: absolute;
         top: $scaleheight + .5rem;
         background-color: $item-background;
-        border-radius: .1rem;
+        // border-radius: .1rem;
         padding-top: .5rem;
         padding-bottom: .5rem;
         font-size: 1rem; /* Changing this will break item text stickyness */
-        margin-left: 5px;
-        margin-right: 5px;
+        // margin-left: 5px;
+        // margin-right: 5px;
+
+        .triangle{
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 0;
+
+            &.bottom{
+                border-bottom: 2.175rem solid $item-background;
+            }
+            
+            &.top{
+                border-top: 2.175rem solid $item-background;
+            }
+        }
     }
     .itemtext{
         &.point{
