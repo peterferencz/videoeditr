@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { DrawFrame, getTimelineData, getTotalFrames, render } from '../core/Renderer'
+import { DrawFrame, getScenes, getTimelineData, getTotalFrames, render } from '../core/Renderer'
 import { SceneGenerator } from '../core/Scene'
 import { setup as renderSetup } from '../core/Renderer'
 import './style.scss'
-import TimeLine from './timeline'
+import TimeLine, { TimeLinRTDataElement } from './timeline'
 
 let resolution:[number,number]
 let currentframe = 0
 let totalframes = 0
 let fps = 0
 const rendering = false
+let timeline:TimeLine
+let scenes:TimeLinRTDataElement[]
 
 export type setupConfig = {
     resolution: [number,number],
@@ -61,7 +63,8 @@ export function setup(config:setupConfig){
     //#region timeline
     const timeLineElement = document.getElementById('timeline')!
     const timeLineHoverElement = document.getElementById('timelinehover')!
-    const timeline = new TimeLine(timeLineElement, getTimelineData(), {
+    scenes = getTimelineData()
+    timeline = new TimeLine(timeLineElement, scenes, {
         start:0,
         end:totalframes,
         view:0,
@@ -103,11 +106,33 @@ export function setup(config:setupConfig){
         case 'ArrowRight':
             setCurrentFrame(currentframe+1)
             break
+        case 'ArrowUp': {
+            const el = scenes.find(s => s.from - s.falloffBefore < currentframe && s.to >= currentframe)
+            setCurrentFrame(el ? el.from - el.falloffBefore : currentframe)
+            break
+        }
+        case 'ArrowDown': {
+            const el = scenes.find(s => s.from <= currentframe && s.to + s.falloffAfter > currentframe)
+            setCurrentFrame(el ? el.to + el.falloffAfter : currentframe)
+            break
+        }
         case 'Home':
             setCurrentFrame(0)
             break
         case 'End':
             setCurrentFrame(totalframes)
+            break
+        case 's':
+            if(!e.ctrlKey) break
+            e.preventDefault()
+            openShortcuts()
+            break
+        case 'Escape':
+            closePopup()
+            break
+        case 'F1':
+            openAbout()
+            e.preventDefault()
             break
         case 'r':
             if(!e.ctrlKey) break
@@ -173,22 +198,22 @@ export function setup(config:setupConfig){
         updatePlayingStatus(playing)
     }
 
-    function setCurrentFrame(t:number){
-        if(rendering) return
-        currentframe = Math.max(0, Math.min(totalframes, t))
-        timeline.setTime(currentframe)
-        updateToolbar()
-
-        DrawFrame(currentframe)
-    }
-
+    
     totalFrameText.textContent = `[${totalframes}]`
     totalTimeText.textContent = formattime(totalframes)
-
+    
     setCurrentFrame(0)
     setupCanvas()
 }
 
+function setCurrentFrame(t:number){
+    if(rendering) return
+    currentframe = Math.max(0, Math.min(totalframes, t))
+    if(timeline) { timeline.setTime(currentframe) }
+    updateToolbar()
+
+    DrawFrame(currentframe)
+}
 
 
 //#region toolbar
@@ -215,5 +240,36 @@ function formattime(frame:number){
     const minutes = Math.floor(frame / fps / 60)
     const seconds = Math.floor(frame / 60 % 60)
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2,'0')}`
+}
+//#endregion
+
+//#region topbar
+document.getElementById('top-openAbout')!.addEventListener('click', openAbout)
+document.getElementById('top-openShortcuts')!.addEventListener('click', openShortcuts)
+document.getElementById('top-render')!.addEventListener('click', render)
+//#endregion
+
+//#region popups
+const popupcontainer = document.getElementById('popup')!
+const popup_about = document.getElementById('about')!
+const popup_shortcuts = document.getElementById('shortcuts')!
+popupcontainer.addEventListener('click', (e) => {
+    if(e.target != popupcontainer) return
+    closePopup()
+})
+function openShortcuts(){
+    popupcontainer.style.display = 'block'
+    popup_about.style.display = 'none'
+    popup_shortcuts.style.display = 'flex'
+}
+function openAbout(){
+    popupcontainer.style.display = 'block'
+    popup_about.style.display = 'flex'
+    popup_shortcuts.style.display = 'none'
+    
+}
+function closePopup(){
+    popupcontainer.style.display = 'none'
+
 }
 //#endregion

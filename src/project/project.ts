@@ -45,11 +45,11 @@ function* scene2(scene:Scene){
     // yield slideoutLeftTransition(.25)
 }
 function* scene3(scene:Scene){
-    // const box = new Box(new Vector2(0,0), new Vector2(resolution[0], resolution[1]), Color.PaleGreen)
-    // const text = new Text(new Vector2(resolution[0]/2, resolution[1]/2), 'Out now', {align:'center',family:'roboto',size:100,emphasis:'bold'}, Color.DeepPink)
-    // scene.addViews(box, text)
+    const box = new Box(new Vector2(0,0), new Vector2(resolution[0], resolution[1]), Color.PaleGreen)
+    const text = new Text(new Vector2(resolution[0]/2, resolution[1]/2), 'Out now', {align:'center',family:'roboto',size:100,emphasis:'bold'}, Color.DeepPink)
+    scene.addViews(box, text)
     
-    // yield* text.typeIn(1)
-    // yield* waitSeconds(3)
-    // yield* text.typeOut(1)
+    yield* text.typeIn(1)
+    yield* waitSeconds(3)
+    yield* text.typeOut(1)
 }

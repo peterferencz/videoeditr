@@ -12,6 +12,52 @@ $timelineHeight: max(5rem, 100px);
 html,body{
   background-color: #242424;
 }
+.light{
+  color: #787878;
+}
+#popup{
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 4;
+  display: none;
+
+  .popup{
+    z-index: 5;
+    position: absolute;
+    inset: 5rem;
+    background-color: #242424;
+    padding: 1rem;
+    border-radius: .5rem;
+    display: flex;
+    flex-direction: column;
+
+    &#about{
+
+    }
+
+    &#shortcuts{
+      table{
+        border-collapse: collapse;
+        margin-top: 1rem;
+        
+        tr:nth-child(1){
+          border-bottom: 1px solid white;
+        }
+        th{
+          padding-bottom: .5rem;
+        }
+
+        td{
+          padding: .5rem;
+        }
+        tr:nth-child(even){
+          background-color: #191919;
+        }
+      }
+    }
+  }
+}
 #top{
   width: 100%;
   height: $navbarheight;
@@ -33,23 +79,32 @@ html,body{
   }
   .dropdown{
     position: relative;
-
+    
     button:hover + .content, .content:hover{
       display: flex;
     }
+
     
     .content{
       display: none;
       overflow: visible;
       flex-direction: column;
-      position: absolute;
-      left: 0;
+      position: fixed;
+      left: auto;
       top: auto;
       background-color: #242424;
-
+      box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+      
       button{
         width: auto;
-        display: block;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        position: relative;
+        text-align: left;
+        line-break: strict;
+        cursor: pointer;
       }
     }
   }
@@ -76,6 +131,7 @@ html,body{
 
   canvas{
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    cursor: crosshair;
   }
 }
 #toolbar{
@@ -113,10 +169,6 @@ html,body{
     align-items: center;
     justify-content: center;
     gap: .5rem;
-
-    #actualfps{
-      color: #787878;
-    }
   }
   .right{
     position: absolute;
@@ -129,9 +181,6 @@ html,body{
     justify-content: center;
     gap: .5rem;
   }
-}
-#currentFrame, #totalFrame{
-  color: #787878;
 }
 #timelinehover{
   pointer-events: none;

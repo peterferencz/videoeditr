@@ -19,7 +19,7 @@ const ffmpeg = createFFmpeg({
 export function setup(canvasContext:CanvasRenderingContext2D, setupConfig:setupConfig){
     config = setupConfig
     ctx = canvasContext
-    scenes = getScenes(setupConfig.scenes)
+    setScenes(setupConfig.scenes)
 }
 
 export function getTotalFrames(){
@@ -44,15 +44,19 @@ function isTransition(t:Transition|void): t is Transition{
     return (t as Transition) != undefined
 }
 
-export function getScenes(generators:SceneGenerator[]):WorkingScene[]{
-    const scenes = generators.map(gen => new Scene(gen))
+export function getScenes():WorkingScene[]{
+    return scenes
+}
+
+function setScenes(generators:SceneGenerator[]){
+    const sceneobjects = generators.map(gen => new Scene(gen))
     const workingScenes = []
 
     let start = 0
     let transitionstart = 0
     let transition = undefined
     for(let i = 0; i < generators.length; i++){
-        const currentGen = generators[i](scenes[i])
+        const currentGen = generators[i](sceneobjects[i])
 
         let j = start-1
         for(const val of currentGen){
@@ -62,7 +66,7 @@ export function getScenes(generators:SceneGenerator[]):WorkingScene[]{
             //TODO if last scene, don't allow transition
             transitionstart = j
             transition = (val as Transition)
-            const gen = transition(scenes[i], scenes[i+1], ctx)
+            const gen = transition(sceneobjects[i], sceneobjects[i+1], ctx)
             while(!gen.next().done){
                 j++
             }
@@ -72,14 +76,14 @@ export function getScenes(generators:SceneGenerator[]):WorkingScene[]{
             transitionstart = j
         }
         
-        scenes[i].clearViews()
-        workingScenes.push(new WorkingScene(scenes[i], start, j, transition, j - transitionstart))
+        sceneobjects[i].clearViews()
+        workingScenes.push(new WorkingScene(sceneobjects[i], start, j, transition, j - transitionstart))
         //J = duration
         start = transitionstart
         transition = undefined
     }
     
-    return workingScenes
+    scenes = workingScenes
 }
 
 function clearScreen(){

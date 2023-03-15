@@ -168,7 +168,7 @@ export default class TimelinR{
             const element = this.data[i]
             if(element.from - element.falloffBefore > visibleEnd || element.to + element.falloffAfter < this.offset){continue}
             const itemOffset = (element.from - this.offset)*divSize
-            const itemWidth = (element.to - element.from)*divSize - (element.falloffAfter||i==this.data.length-1?0:5)*divSize
+            const itemWidth = (element.to - element.from)*divSize - (element.falloffAfter||i==this.data.length-1?0:5)
             let div = `<div class="item" style="left:${itemOffset}px;width:${itemWidth}px">`
             if(element.text){
                 //Making it sticky

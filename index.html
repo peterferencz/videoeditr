@@ -4,30 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Video editR</title>
-  <script defer type="module" src="./src/front/main.ts"></script>
   <script defer type="module" src="./src/project/project.ts"></script>
 </head>
 <body>
   <div id="root">
+    <div id="popup">
+      <div id="about" class="popup">
+        <h1>VideoeditR</h1>
+        <p class="light">version 1.0</p>
+        <p>Mady by Péter Ferencz <a href="https://peterferencz.me" target="_blank">https://peterferencz.me</a></p>
+      </div>
+      <div id="shortcuts" class="popup">
+        <h1>Shortcuts</h1>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Shortcut</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Next frame</td>
+            <td>Right arrow</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Previous frame</td>
+            <td>Left Arrow</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>First frame</td>
+            <td>Home</td>
+            <td>Jump to the first frame</td>
+          </tr>
+          <tr>
+            <td>Last frame</td>
+            <td>End</td>
+            <td>Jump to the last possible frame</td>
+          </tr>
+          <tr>
+            <td>Beginning of scene</td>
+            <td>Up arrow</td>
+            <td>Jump to the first frame of the current scene, after transition</td>
+          </tr>
+          <tr>
+            <td>End of scene</td>
+            <td>Down arrow</td>
+            <td>Jump to the last frame of the current scene, before transition</td>
+          </tr>
+        </table>
+      </div>
+    </div>
     <div id="top">
       <div class="dropdown">
         <button>File</button>
         <div class="content">
-          <button>B1</button>
-          <button>B2 with a long ass name</button>
-          <button>B3</button>
-          <button>B4</button>
-          <button>B5</button>
+          <button id="top-openAbout"><span>About</span><span class="light">F1</span></button>
+          <button id="top-openShortcuts"><span>Shortcuts</span><span class="light">Ctrs + S</span></button>
         </div>
       </div>
       <div class="dropdown">
-        <button>File</button>
+        <button>Rendering</button>
         <div class="content">
-          <button>B1</button>
-          <button>B2</button>
-          <button>B3</button>
-          <button>B4</button>
-          <button>B5</button>
+          <button id="top-render"><span>Render</span><span class="light">Ctrl + R</span></button>
         </div>
       </div>
     </div>
@@ -37,15 +76,15 @@
     <div id="toolbar">
       <div class="left">
         <p id="currentTime">--:--</p>
-        <p id="currentFrame">[-]</p>
+        <p id="currentFrame" class="light">[-]</p>
       </div>
       <div class="center">
         <p id="playingstatus">[------]</p>
-        <p id="actualfps">[-- fps]</p>
+        <p id="actualfps" class="light">[-- fps]</p>
       </div>
       <div class="right">
+        <p id="totalFrame" class="light">[-]</p>
         <p id="totalTime">--:--</p>
-        <p id="totalFrame">[-]</p>
       </div>
     </div>
     <div id="bottom">
