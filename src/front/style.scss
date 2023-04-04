@@ -32,10 +32,6 @@ html,body{
     display: flex;
     flex-direction: column;
 
-    &#about{
-
-    }
-
     &#shortcuts{
       table{
         border-collapse: collapse;
@@ -84,7 +80,6 @@ html,body{
       display: flex;
     }
 
-    
     .content{
       display: none;
       overflow: visible;
@@ -108,7 +103,6 @@ html,body{
       }
     }
   }
-
 }
 #timelinecontainer{
   height: $timelineHeight;

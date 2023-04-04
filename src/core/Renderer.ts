@@ -1,11 +1,8 @@
 import { getConfig, setupConfig } from '../front/main'
-import { Gen, Scene, SceneGenerator, WorkingScene } from './Scene'
-import { View } from './View'
+import {  Scene, SceneGenerator, WorkingScene } from './Scene'
 import { Transition } from './Transition'
 import { TimeLinRTDataElement } from '../front/timeline'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
-
-type flagTypes = {name:'transitioning',value:number}
 
 let previousFrame = -1
 let config:setupConfig

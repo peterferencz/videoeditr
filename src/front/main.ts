@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { DrawFrame, getScenes, getTimelineData, getTotalFrames, render } from '../core/Renderer'
+import { DrawFrame, getTimelineData, getTotalFrames, render } from '../core/Renderer'
 import { SceneGenerator } from '../core/Scene'
 import { setup as renderSetup } from '../core/Renderer'
 import './style.scss'
@@ -24,6 +24,7 @@ export type setupConfig = {
     }
 }
 
+const canvascontainer = document.getElementById('preview')!
 const canvas:HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvas')!
 const ctx = canvas.getContext('2d')!
 
@@ -46,8 +47,6 @@ export function setup(config:setupConfig){
     canvas.width = resolution[0]
     canvas.height = resolution[1]
     function setupCanvas(){
-        const canvascontainer = document.getElementById('preview')!
-
         if(canvascontainer.clientWidth / canvascontainer.clientHeight > resolution[0] / resolution[1] ){
             canvas.style.width = canvascontainer.clientHeight * resolution[0] / resolution[1] + 'px'
             canvas.style.height = canvascontainer.clientHeight + 'px'
@@ -134,6 +133,10 @@ export function setup(config:setupConfig){
             openAbout()
             e.preventDefault()
             break
+        case 'F11':
+            toggleFullscreen()
+            e.preventDefault()
+            break
         case 'r':
             if(!e.ctrlKey) break
             setCurrentFrame(0)
@@ -144,6 +147,8 @@ export function setup(config:setupConfig){
             break
         }
     })
+
+    window.addEventListener('fullscreen', toggleFullscreen)
 
     let playing = false
     window.addEventListener('blur', Pause)
@@ -270,6 +275,21 @@ function openAbout(){
 }
 function closePopup(){
     popupcontainer.style.display = 'none'
+}
 
+let isFullscreen = false
+function toggleFullscreen(){
+    if(isFullscreen){
+        exitFullscreen()
+    }else{
+        fullscreen()
+    }
+    isFullscreen = !isFullscreen
+}
+function fullscreen(){
+    canvascontainer.requestFullscreen()
+}
+function exitFullscreen(){
+    document.exitFullscreen()
 }
 //#endregion

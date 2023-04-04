@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { lerpGen, easeQuadGen } from './Math'
+import { getFrames } from './Time'
 
 export class Color{
     red:number
@@ -18,7 +19,8 @@ export class Color{
         return `rgba(${this.red},${this.green},${this.blue},${this.alpha})`
     }
 
-    * linear(to:Color, frames:number){
+    * linear(to:Color, time:number){
+        const frames = getFrames(time)
         const genR = lerpGen(this.red, to.red, frames)
         const genG = lerpGen(this.green, to.green, frames)
         const genB = lerpGen(this.blue, to.blue, frames)
@@ -38,7 +40,8 @@ export class Color{
         this.alpha = to.alpha
     }
     
-    * ease(to:Color, frames:number){
+    * ease(to:Color, time:number){
+        const frames = getFrames(time)
         const genR = easeQuadGen(this.red, to.red, frames)
         const genG = easeQuadGen(this.green, to.green, frames)
         const genB = easeQuadGen(this.blue, to.blue, frames)
@@ -58,7 +61,8 @@ export class Color{
         this.alpha = to.alpha
     }
 
-    * easeIn(frames:number, force=true){
+    * easeIn(time:number, force=true){
+        const frames = getFrames(time)
         const alpha = easeQuadGen(force?0:this.alpha,1,frames)
 
         for(let i = 0; i < frames + 1; i++){
@@ -70,7 +74,8 @@ export class Color{
         this.alpha = 1
     }
     
-    * easeOut(frames:number, force=true){
+    * easeOut(time:number, force=true){
+        const frames = getFrames(time)
         const alpha = easeQuadGen(force?this.alpha:1,0,frames)
 
         for(let i = 0; i < frames + 1; i++){
@@ -82,7 +87,8 @@ export class Color{
         this.alpha = 0
     }
     
-    * lerpIn(frames:number, force=true){
+    * lerpIn(time:number, force=true){
+        const frames = getFrames(time)
         const alpha = lerpGen(force?0:this.alpha,1,frames)
 
         for(let i = 0; i < frames + 1; i++){
@@ -94,7 +100,8 @@ export class Color{
         this.alpha = 1
     }
     
-    * lerpOut(frames:number, force=true){
+    * lerpOut(time:number, force=true){
+        const frames = getFrames(time)
         const alpha = lerpGen(force?this.alpha:1,0,frames)
 
         for(let i = 0; i < frames + 1; i++){

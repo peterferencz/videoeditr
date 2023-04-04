@@ -1,3 +1,4 @@
+import { getConfig } from '../front/main'
 import { lerpGen, easeQuadGen } from './Math'
 import { getFrames } from './Time'
 
@@ -66,7 +67,16 @@ export class Vector2{
         return new Vector2(this.x, this.y)
     }
 
-    static center(v1:Vector2, v2:Vector2){
+    static center(){
+        const resolution = getConfig().resolution
+        return new Vector2(resolution[0]/2, resolution[1]/2)
+    }
+
+    static middle(v1:Vector2, v2:Vector2){
         return new Vector2(v1.x+ (v1.x+v2.x)/2,v1.y+ (v1.y+v2.y)/2)
+    }
+
+    static zero(){
+        return new Vector2(0,0)
     }
 }
